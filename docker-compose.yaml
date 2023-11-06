@@ -1,0 +1,39 @@
+version: '3.1'
+services:
+  build:
+    image: build:develop
+    build:
+      context: "."
+      dockerfile: ".docker/build.Dockerfile"
+
+  auth:
+    build:
+      context: "."
+      dockerfile: ".docker/auth.Dockerfile"
+    restart: unless-stopped
+    depends_on:
+      build:
+        condition: service_completed_successfully
+      auth_db:
+        condition: service_healthy
+    volumes:
+      - './.config/auth.docker.yaml:/app/config.yaml'
+      - './migrations/auth/:/app/migrations/auth'
+    ports:
+      - "80:80"
+
+  auth_db:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      PGUSER: usr
+      POSTGRES_DB: auth
+      POSTGRES_USER: usr
+      POSTGRES_PASSWORD: authpwd
+    healthcheck:
+      test: "pg_isready -d $$POSTGRES_DB -U $$POSTGRES_USER"
+      interval: 10s
+      timeout: 5s
+      retries: 5

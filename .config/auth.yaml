@@ -1,0 +1,22 @@
+app:
+  debug: true
+  shutdown_timeout: 22s
+database:
+  dsn: postgres://usr:authpwd@localhost:5632/auth?sslmode=disable
+  migrations_dir: "file://../../migrations/auth"
+http:
+  serve_address: localhost:8626
+  base_path: /auth/v1
+auth:
+  access_token_duration: 15s
+  refresh_token_duration: 1h
+  users:
+    - login: test123
+      password: qwerty
+      email: test123@random.site
+    - login: test626
+      password: asdfg
+      email: test626@random.site
+    - login: zxcvb
+      password: qwerty
+      email: test333@random.site

@@ -1,0 +1,26 @@
+app:
+  debug: true
+  shutdown_timeout: 22s
+database:
+  dsn: postgres://usr:authpwd@auth_db:5432/auth?sslmode=disable
+  migrations_dir: "file://migrations/auth"
+http:
+  serve_address: :80
+  swagger_address: :9625
+  base_path: /auth/v1
+  access_token_cookie: access_token
+  refresh_token_cookie: refresh_token
+auth:
+  access_token_duration: 15s
+  refresh_token_duration: 1h
+  users:
+    - login: test123
+      password: qwerty
+      email: test123@random.site
+    - login: test626
+      password: asdfg
+      email: test626@random.site
+    - login: zxcvb
+      password: qwerty
+      email: test333@random.site
+
